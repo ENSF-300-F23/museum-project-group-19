@@ -212,7 +212,7 @@ VALUES      ('Departement des Peintures', 100015, 2022, null),
             ("Département des Antiquités orientales", 100020, 2022, null);
 
 
---@block
+
 DROP ROLE IF EXISTS db_admin@localhost, read_access@localhost;
 CREATE ROLE db_admin@localhost, read_access@localhost;
 GRANT ALL PRIVILEGES ON MUSEUM.* TO db_admin@localhost;
@@ -220,8 +220,8 @@ GRANT Select ON MUSEUM.* TO read_access@localhost;
 
 DROP USER IF EXISTS dataentry@localhost;
 DROP USER IF EXISTS guest@localhost;
-CREATE USER dataentry@localhost IDENTIFIED WITH mysql_native_password BY 'password';
-CREATE USER guest@localhost;
+CREATE USER dataentry@localhost IDENTIFIED BY 'Password1!';
+CREATE USER guest@localhost IDENTIFIED BY 'Guest123!';
 GRANT db_admin@localhost TO dataentry@localhost;
 GRANT read_access@localhost TO guest@localhost;
 SET DEFAULT ROLE ALL TO dataentry@localhost;
