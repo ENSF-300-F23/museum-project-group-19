@@ -2,101 +2,105 @@
 -- 'group-19'
 -- Created by Qasim Amar, Said Rehmani, Siddhartha Paudel
 
-DROP DATABASE IF EXISTS Museum;
-CREATE DATABASE Museum;
-USE Museum;
+DROP DATABASE IF EXISTS MUSEUM;
+CREATE DATABASE MUSEUM; 
+USE MUSEUM;
 
-CREATE TABLE ARTIST_INFO (
-  Artist_Name VARCHAR(100) NOT NULL,
+CREATE TABLE ARTIST_INFO
+( Artist_Name   VARCHAR(100)    NOT NULL,
   Birth_Year INT,
   Death_Year INT,
   Country_of_Origin VARCHAR(30),
   Art_Epoch VARCHAR(30),
   Primary_Style VARCHAR(30),
-  Artist_Description VARCHAR(100),
-  PRIMARY KEY (Artist_Name)
-);
+  Artist_Description VARCHAR(100),   
 
-CREATE TABLE EXHIBIT_DETAILS (
-  Exhibit_ID INT NOT NULL,
+PRIMARY KEY (Artist_Name));
+
+CREATE TABLE EXHIBIT_DETAILS
+( Exhibit_ID INT NOT NULL,
   Exhibit_Name VARCHAR(100) NOT NULL,
   Start_Date DATE,
   End_Date DATE,
   PRIMARY KEY (Exhibit_ID)
 );
 
-CREATE TABLE ART_PIECES (
-  ID_NO INT NOT NULL,
+CREATE TABLE ART_PIECES
+( ID_NO INT NOT NULL,
   Exhibit_ID INT,
   Piece_Title VARCHAR(200),
-  Artist_Name VARCHAR(30),
+  Artist_Name VARCHAR(100),
   Creation_Year INT,
   Piece_Description VARCHAR(100),
   Art_Type VARCHAR(30),
   Piece_Origin VARCHAR(30),
-  Art_Era VARCHAR(30),
-  PRIMARY KEY (Piece_ID),
-  FOREIGN KEY (Exhibit_ID) REFERENCES EXHIBIT_DETAILS(Exhibit_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (Artist_Name) REFERENCES ARTIST_INFO(Artist_Name) ON DELETE CASCADE ON UPDATE CASCADE
-);
+  Art_Epoch VARCHAR(30),
+     
+PRIMARY KEY (ID_NO),
+FOREIGN KEY (Exhibit_ID) REFERENCES EXHIBIT_DETAILS(Exhibit_ID)
+ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (Artist_Name) REFERENCES ARTIST_INFO(Artist_Name)
+ON DELETE CASCADE ON UPDATE CASCADE);
 
-CREATE TABLE PAINTINGS (
-  ID_NO INT NOT NULL,
+CREATE TABLE PAINTINGS
+( ID_NO INT NOT NULL,
   Paint_Type VARCHAR(50),
   Created_On VARCHAR(30),
   Painting_Style VARCHAR(30),
-  FOREIGN KEY (Piece_ID) REFERENCES ART_PIECES(Piece_ID) ON DELETE CASCADE ON UPDATE CASCADE
-);
+   
+FOREIGN KEY (ID_NO) REFERENCES ART_PIECES(ID_NO)
+ON DELETE CASCADE ON UPDATE CASCADE);
 
-CREATE TABLE SCULPTURES (
-  ID_NO INT NOT NULL,
-  Material_Used VARCHAR(30),
+CREATE TABLE SCULPTURES
+( ID_NO INT NOT NULL,
+  Material_Used VARCHAR(100),
   Height_CM INT,
   Weight_KG FLOAT,
   Sculpture_Style VARCHAR(30),
-  FOREIGN KEY (Piece_ID) REFERENCES ART_PIECES(Piece_ID) ON DELETE CASCADE ON UPDATE CASCADE
-);
+   
+FOREIGN KEY (ID_NO) REFERENCES ART_PIECES(ID_NO)
+ON DELETE CASCADE ON UPDATE CASCADE);
 
-CREATE TABLE OTHER_ART (
-  ID_NO INT NOT NULL,
+CREATE TABLE OTHER_ART
+( ID_NO INT NOT NULL,
   Art_Type VARCHAR(30),
   Art_Style VARCHAR(30),
-  FOREIGN KEY (Piece_ID) REFERENCES ART_PIECES(Piece_ID) ON DELETE CASCADE ON UPDATE CASCADE
-);
+   
+FOREIGN KEY (ID_NO) REFERENCES ART_PIECES(ID_NO)
+ON DELETE CASCADE ON UPDATE CASCADE);
 
-CREATE TABLE PERMANENT_COLLECTIONS (
-  ID_NO INT NOT NULL,
+
+CREATE TABLE PERMANENT_COLLECTIONS
+( ID_NO INT NOT NULL,
   Acquisition_Year INT,
   Collection_Status VARCHAR(30),
   Purchase_Cost INT,
-  FOREIGN KEY (Piece_ID) REFERENCES ART_PIECES(Piece_ID) ON DELETE CASCADE ON UPDATE CASCADE
-);
 
-CREATE TABLE GALLERY_COLLECTIONS (
-  Collection_Name VARCHAR(200) NOT NULL,
+FOREIGN KEY (ID_NO) REFERENCES ART_PIECES(ID_NO)
+ON DELETE CASCADE ON UPDATE CASCADE);
+
+CREATE TABLE GALLERY_COLLECTIONS
+( Collection_Name VARCHAR(200) NOT NULL,
   Collection_Type VARCHAR(30),
   Collection_Description VARCHAR(100),
   Collection_Address VARCHAR(150),
   Contact_Phone VARCHAR(30),
   Collection_Contact VARCHAR(30),
-  PRIMARY KEY (Collection_Name)
-);
+  PRIMARY KEY (Collection_Name));
 
-CREATE TABLE BORROWED_ART (
-  Collection_Name VARCHAR(200) NOT NULL,
+CREATE TABLE BORROWED_ART
+( Collection_Name VARCHAR(200) NOT NULL,
   Piece_ID INT NOT NULL,
   Borrow_Date INT,
   Return_Date INT,
-  FOREIGN KEY (Piece_ID) REFERENCES ART_PIECES(Piece_ID) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (Collection_Name) REFERENCES GALLERY_COLLECTIONS(Collection_Name) ON DELETE CASCADE ON UPDATE CASCADE
-);
+   
+FOREIGN KEY (Piece_ID) REFERENCES ART_PIECES(ID_NO)
+ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (Collection_Name) REFERENCES GALLERY_COLLECTIONS(Collection_Name)
+ON DELETE CASCADE ON UPDATE CASCADE);
 
 
-FOREIGN KEY (ID_NO) REFERENCES ART_OBJECTS(ID_NO) WITH DELETE CASCADE AND UPDATE CASCADE,
-FOREIGN KEY (COLLECTIONS) REFERENCES COLLECTIONS(NAME) WITH DELETE CASCADE AND UPDATE CASCADE
-
-
-INSERT INTO ARTIST
+INSERT INTO ARTIST_INFO
 VALUES      ('Marcus Gheeraerts the Younger', 1561, 1636, 'Belgium', 'Baroque', "Portraits", "Painter"),
             ('Hans Holbein the Younger', 1498, 1543, 'United Kingdom', 'Renaissance', "Portraits", "Painter"),
             ('Pietro Torrigiano', 1472, 1528, 'Italy', 'Renaissance', "Sculptures", "Sculpter"),
@@ -111,17 +115,17 @@ VALUES      ('Marcus Gheeraerts the Younger', 1561, 1636, 'Belgium', 'Baroque', 
             ('Jean-Honoré Fragonard', 1732, 1806, 'France', 'Reformation and Enlightenment', "Portraits/Scenes", "Painter"),
             ('Alexandros of Antioch', null, null, 'Greece', 'Ancient', "Sculptures", "Sculptor"),
             ('François Gérard', 1770, 1837, 'Italy', 'Reformation and Enlightenment', "Portraits", "Painter"),
-            ('Elias van Nijmegen', 1667, 1755, 'Netherlands', 'Early Modern Era', "Abstract", "Painter");
+            ('Elias van Nijmegen', 1667, 1755, 'Netherlands', 'Early Modern Era', "Abstract", "Painter"),
             ('Augustin Quesnel', 1595, 1661, 'France', 'Fronde', "Portraits", "Painter");
 
 
-INSERT INTO EXHIBITIONS
+INSERT INTO EXHIBIT_DETAILS
 VALUES      (200000, 'The Tudors: Art and Majesty in Renaissance England', '2022-10-10', '2023-01-08'),
             (200001, "Cubism and the Trompe l'Oeil Tradition", '2022-10-20', '2023-01-22'),
             (200002, 'Hear Me Now: The Black Potters of Old Edgefield, South Carolina', '2022-09-09', '2023-02-05'),
             (200003, "The Master Pieces of the Louvre", '2022-12-10', '2023-01-10');
 
-INSERT INTO ART_OBJECTS
+INSERT INTO ART_PIECES
 VALUES      (100001, 200000,'Ellen Maurice','Marcus Gheeraerts the Younger',1597,'Upper Body Portrait','Painting','Flemish','Elizabethan Era'),
             (100002, 200000,'Hermann von Wedigh III','Hans Holbein the Younger',1532,'Upper Body Portrait','Painting','German','Renaissance'),
             (100003, 200000,'Portrait Bust of John Fisher, Bishop of Rochester','Pietro Torrigiano',1515,'Human Sculpture','Sculpture','Italian','Renaissance'),
@@ -147,8 +151,7 @@ VALUES      (100001, 200000,'Ellen Maurice','Marcus Gheeraerts the Younger',1597
             (100020, 200003,"Portrait d'homme",'Augustin Quesnel',1652,'Upper body portrait','Painting','French','Fronde');
 
 
-
-INSERT INTO PAINTING
+INSERT INTO PAINTINGS
 VALUES      (100001, 'Oil', 'Wood', 'Portrait'),
             (100002, 'Oil and Gold', 'Wood', 'Portrait'),
             (100007, 'Oil', 'Canvas', 'Abstract'),
@@ -162,7 +165,7 @@ VALUES      (100001, 'Oil', 'Wood', 'Portrait'),
             (100020, 'Oil', 'Wood', 'Portrait');
             
 
-INSERT INTO SCULPTURE
+INSERT INTO SCULPTURES
 VALUES      (100003, 'Polychrome Terracotta', 61.6, 65.7, 'Human'),
             (100004, 'Steel, Gold, Leather, and Textile', 176.5, 10, 'Historical'),
             (100011, 'Salt-fired porcelain', 44.5, 29.5, 'Jug'),
@@ -173,13 +176,13 @@ VALUES      (100003, 'Polychrome Terracotta', 61.6, 65.7, 'Human'),
 
 
             
-INSERT INTO OTHER
+INSERT INTO OTHER_ART
 VALUES      (100005, 'Tool', 'Luxurious'),
             (100006, 'Textile', 'Luxurious');
 
 
-INSERT INTO PERMANENT
-VALUES      (100001, 2022, "Owned", 192384),
+INSERT INTO PERMANENT_COLLECTIONS
+VALUES      (100001, 2022, "Owned", 19384),
             (100002, 2022, "Owned", 493058),
             (100003, 2022, "Owned", 49024),
             (100004, 2022, "Owned", 93284),
@@ -192,16 +195,15 @@ VALUES      (100001, 2022, "Owned", 192384),
             (100011, 2022, "Owned", 13101),
             (100012, 2022, "Owned", 18920),
             (100013, 2022, "Owned", 9204),
-            (100014, 2022, "Owned", 24244);
-            
+            (100014, 2022, "Owned", 24244);        
 
-INSERT INTO COLLECTIONS
+INSERT INTO GALLERY_COLLECTIONS
 VALUES      ('Departement des Peintures', 'Paintings', 'Historical Paintings', "Louvre Museum, Rue de Rivoli, 75001 Paris, France", "+33 1 40 20 50 50", "Laurence des Cars"),
             ('Département des Antiquités orientales', 'Sculptures', 'Historical sculptures and tools', "Louvre Museum, Rue de Rivoli, 75001 Paris, France", "+33 1 40 20 50 50", "Laurence des Cars"),
             ('Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes', 'Sculptures', 'Historical sculptures and tools', "Louvre Museum, Rue de Rivoli, 75001 Paris, France", "+33 1 40 20 50 50", "Laurence des Cars");
             
 
-INSERT INTO BORROWED
+INSERT INTO BORROWED_ART
 VALUES      ('Departement des Peintures', 100015, 2022, null),
             ('Departement des Peintures', 100016, 2022, null),
             ('Département des Antiquités orientales', 100017, 2022, null),
@@ -210,6 +212,7 @@ VALUES      ('Departement des Peintures', 100015, 2022, null),
             ("Département des Antiquités orientales", 100020, 2022, null);
 
 
+--@block
 DROP ROLE IF EXISTS db_admin@localhost, read_access@localhost;
 CREATE ROLE db_admin@localhost, read_access@localhost;
 GRANT ALL PRIVILEGES ON MUSEUM.* TO db_admin@localhost;
