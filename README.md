@@ -5,6 +5,26 @@
 - modify this file to include any notes on how to use and run the program
 - include any features you have added beyond the minimum requirements in a features list
 
+- Qasim Amar:
+Python code
+SQL queries 
+Diagram Revision
+SQL database creation
+
+Siddhartha Paudel:
+Python code
+Relational Schema creation
+Diagram Revision
+Report Creation
+
+Said Rahmani:
+Python code
+SQL Query revision
+EERD Diagram
+SQL database creation
+
+-For admin control please use root user and password as dataenter does not have the authority to add user.
+
 ## Organization:
 - code folder: contains your main python application code
 - sql scripts folder: contains all sql scripts required (database creation and initialization, sql script with query tasks in the handout, etc...)
