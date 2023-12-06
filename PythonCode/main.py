@@ -433,6 +433,146 @@ def check_if_exists(id, table):
                 return True
         return False
     
+def museum_view():
+
+
+   running = True
+   while(running):
+     print("Museum View Console: ")
+     print("1- View Art Pieces")
+     print("2- View Artists")
+     print("3- View Exhibitions")
+     print("4- View Collections")
+     print("9- Exit")
+     selection = input()
+     if selection == '1':
+         view_art_piece()
+     elif selection == '2':
+         view_artist()
+     elif selection == '3':
+         view_exhibit_details()
+     elif selection == '4':
+         view_gallery_collection()
+     elif selection == '9':
+         running = False
+     else:
+         print("Invalid selection")
+
+
+def view_artist():
+   query = "select * from Artist_Info"
+   cur.execute(query)
+   print_tables(cur)
+
+
+def view_exhibit_details():
+   query = "select * from Exhibit_Details"
+   cur.execute(query)
+   print_tables(cur)
+
+
+def view_gallery_collection():
+   query = "select Collection_Name, Collection_Type, Collection_Description from Gallery_Collections"
+   cur.execute(query)
+   print_tables(cur)
+
+
+def view_art_piece():
+
+
+   running = True
+   while(running):
+     print("Art Piece View Console: ")
+     print("1- View Select Information for All Art Pieces")
+     print("2- Search for an Art Piece")
+     print("3- View Paintings")
+     print("4- View Sculptures")
+     print("5- View Others")
+     print("9- Exit")
+     selection = input()
+     if selection == '1':
+         view_all_art_piece()
+     elif selection == '2':
+         search_art_piece()
+     elif selection == '3':
+         query = "select art_pieces.Piece_Title, Paint_type, Created_on, Painting_style from Paintings inner join art_pieces on Paintings.ID_no = art_pieces.ID_no"
+         cur.execute(query)
+         print_tables(cur)
+     elif selection == '4':
+         query = "select art_pieces.Piece_Title, Material_Used, Height_CM, Weight_KG, Sculpture_Style from Sculptures inner join art_pieces on Sculptures.ID_no = art_pieces.ID_no"
+         cur.execute(query)
+         print_tables(cur)
+     elif selection == '5':
+         query = "select art_pieces.Piece_Title, Other_Art.Art_Type, Art_Style from Other_Art inner join art_pieces on Other_Art.ID_no = art_pieces.ID_no"
+         cur.execute(query)
+         print_tables(cur)
+     elif selection == '9':
+         running = False
+     else:
+         print("Invalid selection")
+
+
+def view_all_art_piece():
+   query = "select Piece_Title, Artist_Name, Piece_Origin, Art_Epoch from art_pieces"
+   cur.execute(query)
+   print_tables(cur)
+  
+def search_art_piece():
+   while (True):
+       print("Select search criteria: ")
+       print("1- Search by ID Number")
+       print("2- Search by Title")
+       print("3- Search by Artist")
+       print("4- Search by Year")
+       print("5- Search by Origin")
+       print("6- Search by Epoch")
+       print("7- Search by Style")
+       print("8- Exit")
+       selection = input()
+
+
+       if selection == '1':
+           art_id_no = int(input("Type the ID Number of the art Piece you are serching for: "))
+           query = "select Piece_Title, Artist_Name, Creation_Year, ID_no from art_pieces where art_pieces.ID_NO = %(id_no)s"
+           cur.execute(query, { 'id_no': art_id_no})
+       elif selection == '2':
+           art_title = input("Type the Title of the art Piece you are serching for: ")
+           query = "select Piece_Title, Artist_Name, Creation_Year from art_pieces where art_pieces.Piece_Title = %(title)s"
+           cur.execute(query, { 'title': art_title})
+       elif selection == '3':
+           art_artist = input("Type the Artist of the art Piece you are serching for: ")
+           query = "select Piece_Title, Artist_Name, Creation_Year from art_pieces where art_pieces.Artist_Name = %(artist)s"
+           cur.execute(query, { 'artist': art_artist})
+       elif selection == '4':
+           art_year = int(input("Type the Year of the art Piece you are serching for: "))
+           query = "select Piece_Title, Artist_Name, Creation_Year from art_pieces where art_pieces.Creation_Year = %(Year)s"
+           cur.execute(query, { 'Year': art_year})
+       elif selection == '5':
+           art_origin = input("Type the Title of the art Piece you are serching for: ")
+           query = "select Piece_Title, Artist_Name, Creation_Year, Piece_Origin from art_pieces where art_pieces.Piece_Title = %(origin)s"
+           cur.execute(query, { 'origin': art_origin})
+       elif selection == '6':
+           art_epoch = input("Type the Artist of the art Piece you are serching for: ")
+           query = "select Piece_Title, Artist_Name, Creation_Year, Art_Epoch from art_pieces where art_pieces.Artist_Name = %(epoch)s"
+           cur.execute(query, { 'epoch': art_epoch})
+       elif selection == '7':
+           art_style = input("Type the Style of the art Piece you are serching for: ")
+           query = "select Piece_Title, Artist_Name, Creation_Year, Art_Type from art_pieces where art_pieces.Creation_Year = %(Style)s"
+           cur.execute(query, { 'Style': art_style})
+       elif selection == '9':
+           break
+       else:
+           print("Invalid selection")
+
+
+       print_tables(cur)
+
+
+def print_tables(cur):
+   col_names=cur.column_names
+   search_result=cur.fetchall()
+   print(tabulate(search_result, headers=col_names, tablefmt='psql'))
+
     
 def string_to_int(string):
     try:
@@ -456,7 +596,6 @@ if __name__ == "__main__":
     else:
         username="guest"
         passcode="Guest123!"
-
 
     
     cnx = mysql.connector.connect(
