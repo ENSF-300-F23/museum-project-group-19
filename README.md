@@ -23,7 +23,7 @@ SQL Query revision
 EERD Diagram
 SQL database creation
 
--For admin control use root user and password as dataenter does not have the authority.
+-For admin control please use root user and password as dataenter does not have the authority to add user.
 
 ## Organization:
 - code folder: contains your main python application code
