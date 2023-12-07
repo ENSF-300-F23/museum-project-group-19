@@ -4,7 +4,7 @@
 
 import mysql.connector
 from tabulate import tabulate
-def admin_consol():
+def admin_interface():
 
     running = True
     while(running):
@@ -22,7 +22,7 @@ def admin_consol():
         elif selection == '4':
             data_entry()
         elif selection == '5':
-            museum_view()
+            museum()
         elif selection == '9':
             running = False
         else:
@@ -45,7 +45,7 @@ def handle_sql_commands():
     if sql_selection == '1':
           sql_command = input("Enter your SQL command(SELECT): ")
           cur.execute(sql_command)
-          print_tables(cur)
+          table_prints(cur)
     else:
           sql_command = input("Enter your SQL command(NO SELECT): ")
           cur.execute(sql_command)
@@ -81,9 +81,9 @@ def user_management():
         selection = input()
 
         if selection == '1':
-            add_user()
+            user_add()
         elif selection == '2':
-            access_control()
+            access_limits()
         elif selection == '3':
             manage_user()
         elif selection == '9':
@@ -91,7 +91,7 @@ def user_management():
         else:
             print("Invalid selection")
 
-def add_user():
+def user_add():
     print("Enter New User information below:")
     user_name = input("User Name: ")
     user_password = input("User Password: ")
@@ -106,7 +106,7 @@ def add_user():
     else:
         print("Invalid User Name or Password")
 
-def access_control():
+def access_limits():
     print("Enter User information below:")
     user_name = input("User Name: ")
 
@@ -144,15 +144,15 @@ def manage_user():
         selection = input("Enter your choice: ")
 
         if selection == '1':
-            delete_user(user_name)
+            remove_user(user_name)
         elif selection == '2':
             suspend_user(user_name)
         elif selection == '3':
-            activate_user(user_name)
+            user_trigger(user_name)
         else:
             print("Invalid selection")
 
-def delete_user(user_name):
+def remove_user(user_name):
     cur.execute("DROP USER IF EXISTS %(username)s@localhost", {"username": user_name})
     cnx.commit()
     print("User deleted:", user_name)
@@ -162,7 +162,7 @@ def suspend_user(user_name):
     cnx.commit()
     print("User suspended:", user_name)
 
-def activate_user(user_name):
+def user_trigger(user_name):
     cur.execute("ALTER USER %(username)s@localhost ACCOUNT UNLOCK", {"username": user_name})
     cnx.commit()
     print("User activated:", user_name)
@@ -182,13 +182,13 @@ def data_entry():
       if selection == '1':
           add_art_piece()
       elif selection == '2':
-          add_artist()
+          add_artist_info()
       elif selection == '3':
-          add_exhibition()
+          add_exhibit_details()
       elif selection == '4':
           add_gallery_collection()
       elif selection == '5':
-          museum_view()
+          museum()
       elif selection == '9':
           running = False
       else:
@@ -198,18 +198,18 @@ def add_art_piece():
     print("Provide the New Art Piece information below:")
     while(True):
         art_id = int(input("Art Piece ID: "))
-        if art_id != '' and check_if_exists(art_id, 'art_pieces') == False:
+        if art_id != '' and check_existance(art_id, 'art_pieces') == False:
             break
         else:
             print("Invalid Art ID")
     art_exid = string_to_int(input("Art Piece Exhibition ID (press enter and leave blank if unknown): "))
-    if(check_if_exists(art_exid, 'EXHIBIT_DETAILS') == False and art_exid != None):
-        add_exhibition()
+    if(check_existance(art_exid, 'EXHIBIT_DETAILS') == False and art_exid != None):
+        add_exhibit_details()
     art_name = input("Art Piece Name: ")
     art_artist = input("Art Piece Artist (press enter and leave blank if unknown): ") or None
 
-    if(check_if_exists(art_artist, 'ARTIST_INFO') == False and art_artist != None):
-        add_artist()
+    if(check_existance(art_artist, 'ARTIST_INFO') == False and art_artist != None):
+        add_artist_info()
     art_year = string_to_int(input("Art Piece Year (press enter and leave blank if unknown): "))
     art_description = input("Art Piece Description (press enter and leave blank if unknown): ") or None
     while(True):
@@ -238,7 +238,7 @@ def add_art_piece():
     elif art_type == 'Sculpture':
             add_sculpture(art_id)
     elif art_type == 'Other':
-            add_other(art_id)
+            add_other_art(art_id)
     
         
     if art_status == 'Borrowed':
@@ -297,7 +297,7 @@ def add_sculpture(art_id):
 
     print("Sculpture added successfully for art ID:", art_id)
 
-def add_other(art_id):
+def add_other_art(art_id):
     print("Provide the New Art Piece information below:")
 
     other_type = input("Other Type: ")
@@ -317,7 +317,7 @@ def add_borrowed_collection(art_id):
     
     while True:
         borrowed_collection = input("Borrowed Collection Name: ")
-        if borrowed_collection != '' and not check_if_exists(borrowed_collection, 'borrowed_art'):
+        if borrowed_collection != '' and not check_existance(borrowed_collection, 'borrowed_art'):
             break
         else:
             print("Invalid or existing collection name. Please provide a valid and non-existing name.")
@@ -346,11 +346,11 @@ def add_permanent_collection(art_id):
     cur.execute(inst_Permanent_template, inst_Permanent_data)
     cnx.commit()
 
-def add_artist():
+def add_artist_info():
     print("Provide the New Artists information below:")
     while(True):
         artist_name = input("Artist Name: ")
-        if artist_name != '' and check_if_exists(artist_name, 'artist_info') == False:
+        if artist_name != '' and check_existance(artist_name, 'artist_info') == False:
             break
         else:
             print("Invalid Artist Name")
@@ -369,11 +369,11 @@ def add_artist():
 
 
 
-def add_exhibition():
+def add_exhibit_details():
     print("Provide the New Exhibitions information below:")
     while(True):
         ex_id = string_to_int(input("Exhibition ID: "))
-        if ex_id != None and check_if_exists(ex_id, 'exhibit_details') == False:
+        if ex_id != None and check_existance(ex_id, 'exhibit_details') == False:
             break
         else:
             print("Invalid Exhibition ID")
@@ -394,7 +394,7 @@ def add_gallery_collection():
     
     while True:
         collection_name = input("Collection Name: ")
-        if collection_name != '' and not check_if_exists(collection_name, 'gallery_collections'):
+        if collection_name != '' and not check_existance(collection_name, 'gallery_collections'):
             break
         else:
             print("Invalid Collection Name")
@@ -413,7 +413,7 @@ def add_gallery_collection():
 
     print("Collection added successfully:", collection_name)
 
-def check_if_exists(id, table):
+def check_existance(id, table):
     if table == 'art_pieces':
         cur.execute("select ID_no from art_pieces")
         search_result=cur.fetchall()
@@ -446,7 +446,7 @@ def check_if_exists(id, table):
                 return True
         return False
     
-def museum_view():
+def museum():
 
 
    running = True
@@ -475,19 +475,19 @@ def museum_view():
 def view_artist():
    query = "select * from Artist_Info"
    cur.execute(query)
-   print_tables(cur)
+   table_prints(cur)
 
 
 def view_exhibit_details():
    query = "select * from Exhibit_Details"
    cur.execute(query)
-   print_tables(cur)
+   table_prints(cur)
 
 
 def view_gallery_collection():
    query = "select Collection_Name, Collection_Type, Collection_Description from Gallery_Collections"
    cur.execute(query)
-   print_tables(cur)
+   table_prints(cur)
 
 
 def view_art_piece():
@@ -510,15 +510,15 @@ def view_art_piece():
      elif selection == '3':
          query = "select art_pieces.Piece_Title, Paint_type, Created_on, Painting_style from Paintings inner join art_pieces on Paintings.ID_no = art_pieces.ID_no"
          cur.execute(query)
-         print_tables(cur)
+         table_prints(cur)
      elif selection == '4':
          query = "select art_pieces.Piece_Title, Material_Used, Height_CM, Weight_KG, Sculpture_Style from Sculptures inner join art_pieces on Sculptures.ID_no = art_pieces.ID_no"
          cur.execute(query)
-         print_tables(cur)
+         table_prints(cur)
      elif selection == '5':
          query = "select art_pieces.Piece_Title, Other_Art.Art_Type, Art_Style from Other_Art inner join art_pieces on Other_Art.ID_no = art_pieces.ID_no"
          cur.execute(query)
-         print_tables(cur)
+         table_prints(cur)
      elif selection == '9':
          running = False
      else:
@@ -528,7 +528,7 @@ def view_art_piece():
 def view_all_art_piece():
    query = "select Piece_Title, Artist_Name, Piece_Origin, Art_Epoch from art_pieces"
    cur.execute(query)
-   print_tables(cur)
+   table_prints(cur)
   
 def search_art_piece():
    while (True):
@@ -578,10 +578,10 @@ def search_art_piece():
            print("Invalid Selection")
 
 
-       print_tables(cur)
+       table_prints(cur)
 
 
-def print_tables(cur):
+def table_prints(cur):
    col_names=cur.column_names
    search_result=cur.fetchall()
    print(tabulate(search_result, headers=col_names, tablefmt='psql'))
@@ -623,11 +623,11 @@ if __name__ == "__main__":
 
 
     if selection == '1':
-        admin_consol()
+        admin_interface()
     elif selection == '2':
         data_entry()
     else:
-        museum_view()   
+        museum()   
     
     
     cnx.close()
