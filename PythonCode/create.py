@@ -1,5 +1,8 @@
-import mysql.connector
+# create.py
+# 'group-19'
+# Created by Qasim Amar, Said Rehmani, Siddhartha Paudel
 
+import mysql.connector
 
 cnx = mysql.connector.connect(
    host="127.0.0.1",
@@ -7,9 +10,7 @@ cnx = mysql.connector.connect(
    user='root',
    password= 'Password123!')
 
-
 cur = cnx.cursor()
-
 
 fd = open('SQLScripts/Museum.sql', 'r')
 sqlFile = fd.read()
