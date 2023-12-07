@@ -12,6 +12,7 @@ cnx = mysql.connector.connect(
 
 cur = cnx.cursor()
 
+
 fd = open('SQLScripts/Museum.sql', 'r')
 sqlFile = fd.read()
 fd.close()
