@@ -83,7 +83,7 @@ def user_management():
             print("Invalid selection")
 
 def add_user():
-    print("Enter The Following Information for the New User:")
+    print("Enter New User information below:")
     user_name = input("User Name: ")
     user_password = input("User Password: ")
     
@@ -98,7 +98,7 @@ def add_user():
         print("Invalid User Name or Password")
 
 def access_control():
-    print("Enter the following information for the User:")
+    print("Enter User information below:")
     user_name = input("User Name: ")
 
     if user_name:
@@ -125,7 +125,7 @@ def grant_access(user_name):
     print("Access granted for user:", user_name)
 
 def manage_user():
-    print("Enter the following information for the User:")
+    print("Enter User information below:")
     user_name = input("User Name: ")
 
     if user_name:
@@ -186,7 +186,7 @@ def data_entry():
           print("Invalid selection")
 
 def add_art_piece():
-    print("Enter the following information for the new Art Piece:")
+    print("Provide the New Art Piece information below:")
     while(True):
         art_id = int(input("Art Piece ID: "))
         if art_id != '' and check_if_exists(art_id, 'art_pieces') == False:
@@ -239,7 +239,7 @@ def add_art_piece():
             
 
 def add_painting_piece(art_id):
-    print("Enter the following information for the new Painting:")
+    print("Provide the New Painting information below:")
 
     paint_type = input("Painting Type: ")
     paint_drawn = input("Painting Drawn On: ")
@@ -252,7 +252,7 @@ def add_painting_piece(art_id):
     print("Painting added successfully for art ID:", art_id)
 
 def add_sculpture(art_id):
-    print("Enter the following information for the new Sculpture:")
+    print("Provide the New Sculptures information below:")
 
     sculpture_material = input("Sculpture Material: ")
     
@@ -289,7 +289,7 @@ def add_sculpture(art_id):
     print("Sculpture added successfully for art ID:", art_id)
 
 def add_other(art_id):
-    print("Enter the following information for the new Art Piece:")
+    print("Provide the New Art Piece information below:")
 
     other_type = input("Other Type: ")
     other_style = input("Other Style (press enter to leave blank if unknown): ") or None
@@ -300,10 +300,10 @@ def add_other(art_id):
     cur.execute(inst_other_template, inst_other_data)
     cnx.commit()
 
-    print("Other type art Piece added successfully for art ID:", art_id)
+    print("Other Type Art Piece added successfully for art ID:", art_id)
     
 def add_borrowed_collection(art_id):
-    print("Enter the following information for the new Borrowed Art Piece:")
+    print("Provide the New Borrowed Art Piece information below:")
     
     
     while True:
@@ -322,10 +322,10 @@ def add_borrowed_collection(art_id):
     cur.execute(inst_borrowed_template, inst_borrowed_data)
     cnx.commit()
 
-    print("Borrowed art Piece added successfully for art ID:", art_id)
+    print("Borrowed Art Piece added Successfully for art ID:", art_id)
 
 def add_permanent_collection(art_id):
-    print("Enter the following information for the new Permanent Art Piece:")
+    print("Provide the New Permanent Art Piece information below:")
 
     Permanent_date_acquired = string_to_int(input("Permanent Year Acquired: "))
     Permanent_status = input("Permanent Status (press enter and leave blank if unknown): ") or None
@@ -338,7 +338,7 @@ def add_permanent_collection(art_id):
     cnx.commit()
 
 def add_artist():
-    print("Enter the following information for the new Artist:")
+    print("Provide the New Artists information below:")
     while(True):
         artist_name = input("Artist Name: ")
         if artist_name != '' and check_if_exists(artist_name, 'artist_info') == False:
@@ -361,7 +361,7 @@ def add_artist():
 
 
 def add_exhibition():
-    print("Enter the following information for the new Exhibition:")
+    print("Provide the New Exhibitions information below:")
     while(True):
         ex_id = string_to_int(input("Exhibition ID: "))
         if ex_id != None and check_if_exists(ex_id, 'exhibit_details') == False:
@@ -381,7 +381,7 @@ def add_exhibition():
 
 
 def add_gallery_collection():
-    print("Enter the following information for the new Collection:")
+    print("Provide the New Collections information below:")
     
     while True:
         collection_name = input("Collection Name: ")
@@ -536,37 +536,37 @@ def search_art_piece():
 
 
        if selection == '1':
-           art_id_no = int(input("Type the ID Number of the Art Piece you are serching for: "))
+           art_id_no = int(input("Enter the Art Piece ID number: "))
            query = "select Piece_Title, Artist_Name, Creation_Year, ID_no from art_pieces where art_pieces.ID_NO = %(id_no)s"
            cur.execute(query, { 'id_no': art_id_no})
        elif selection == '2':
-           art_title = input("Type the Title of the Art Piece you are serching for: ")
+           art_title = input("Enter the Art Piece Title: ")
            query = "select Piece_Title, Artist_Name, Creation_Year from art_pieces where art_pieces.Piece_Title = %(title)s"
            cur.execute(query, { 'title': art_title})
        elif selection == '3':
-           art_artist = input("Type the Artist of the Art Piece you are serching for: ")
+           art_artist = input("Enter the Artist Name of the Art Piece: ")
            query = "select Piece_Title, Artist_Name, Creation_Year from art_pieces where art_pieces.Artist_Name = %(artist)s"
            cur.execute(query, { 'artist': art_artist})
        elif selection == '4':
-           art_year = int(input("Type the Year of the Art Piece you are serching for: "))
+           art_year = int(input("Enter the Art Piece Year: "))
            query = "select Piece_Title, Artist_Name, Creation_Year from art_pieces where art_pieces.Creation_Year = %(Year)s"
            cur.execute(query, { 'Year': art_year})
        elif selection == '5':
-           art_origin = input("Type the Origin of the Art Piece you are serching for: ")
+           art_origin = input("Enter the Art Piece ID Origin: ")
            query = "select Piece_Title, Artist_Name, Creation_Year, Piece_Origin from art_pieces where art_pieces.Piece_Origin = %(origin)s"
            cur.execute(query, { 'origin': art_origin})
        elif selection == '6':
-           art_epoch = input("Type the Epoch of the Art Piece you are serching for: ")
+           art_epoch = input("Enter the Art Piece Epoch: ")
            query = "select Piece_Title, Artist_Name, Creation_Year, Art_Epoch from art_pieces where art_pieces.Art_Epoch = %(epoch)s"
            cur.execute(query, { 'epoch': art_epoch})
        elif selection == '7':
-           art_style = input("Type the Style of the Art Piece you are serching for: ")
+           art_style = input("Enter the Art Piece Style: ")
            query = "select Piece_Title, Artist_Name, Creation_Year, Art_Type from art_pieces where art_pieces.Piece_Description = %(Style)s"
            cur.execute(query, { 'Style': art_style})
        elif selection == '9':
            break
        else:
-           print("Invalid selection")
+           print("Invalid Selection")
 
 
        print_tables(cur)
@@ -587,12 +587,12 @@ if __name__ == "__main__":
     
    
     print("Museum Database:")
-    print("In order to proceed select your role from the list below:")
+    print("Select Role:")
     print("1-DB Admin")
     print("2-Data Entry")
     print("3-Browse as guest")
 
-    selection = input("type 1, 2, or 3 to select your role: ")
+    selection = input("Enter 1, 2, or 3 to select role: ")
 
     if selection in ['1','2']:
         username= input("User Name: ")
