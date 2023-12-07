@@ -24,6 +24,7 @@ EERD Diagram
 SQL database creation
 
 -For admin control please use root user and password as dataenter does not have the authority to add user.
+-When adding art piece and you propted for info such as artist name make sure it is a existing one in the database.
 
 ## Organization:
 - code folder: contains your main python application code
