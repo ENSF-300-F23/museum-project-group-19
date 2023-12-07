@@ -21,4 +21,4 @@ for command in sqlCommands:
        if command.strip() != '':
            cur.execute(command)
    except (IOError):
-       print("Command skipped: ")
+       print("Command Skipped: ")
