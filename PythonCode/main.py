@@ -8,62 +8,71 @@ def admin_consol():
 
     running = True
     while(running):
-      print("Admin Console: ")
-      print("1- Enter SQL Commands")
-      print("2- Give Path to SQL file")
-      print("3- User Management")
-      print("4- Data Entry")
-      print("5- View Museum Data")
-      print("9- Exit")
 
-      selection = input()
+        print("Admin Console: ")
+        print_menu_options()
+        selection = input()
 
-      if selection == '1':
-          print("Enter your SQL Command Type:")
-          print("1- Select Query")
-          print("2- Anything Else")
-          sql_selection = input()
-          if sql_selection == '1':
-                sql_command = input("Enter your SQL command(SELECT): ")
-                cur.execute(sql_command)
-                print_tables(cur)
-          else:
-                sql_command = input("Enter your SQL command(NO SELECT): ")
-                cur.execute(sql_command)
-                cnx.commit()
+        if selection == '1':
+            handle_sql_commands()
+        elif selection == '2':
+            handle_sql_file()
+        elif selection == '3':
+            user_management()
+        elif selection == '4':
+            data_entry()
+        elif selection == '5':
+            museum_view()
+        elif selection == '9':
+            running = False
+        else:
+            print("Invalid selection")
 
-      elif selection == '2':
-          path = input("Enter the path to your SQL file(NO SELECT QUERIES): ")
-          fd = open(path, 'r')
-          sqlFile = fd.read()
-          fd.close()
-          sqlCommands = sqlFile.split(';')
-          print(sqlCommands)
 
-          for command in sqlCommands:
+def print_menu_options():
+    print("1- Enter SQL Commands")
+    print("2- Provide path to SQL file")
+    print("3- User Management")
+    print("4- Data Entry")
+    print("5- View Museum Data")
+    print("9- Exit")
+
+def handle_sql_commands():
+    print("Enter your SQL Command Type:")
+    print("1- Select Query")
+    print("2- Anything Else")
+    sql_selection = input()
+    if sql_selection == '1':
+          sql_command = input("Enter your SQL command(SELECT): ")
+          cur.execute(sql_command)
+          print_tables(cur)
+    else:
+          sql_command = input("Enter your SQL command(NO SELECT): ")
+          cur.execute(sql_command)
+          cnx.commit()
+    pass
+
+def handle_sql_file():
+        path = input("Enter the path to your SQL file(NO SELECT QUERIES): ")
+        fd = open(path, 'r')
+        sqlFile = fd.read()
+        fd.close()
+        sqlCommands = sqlFile.split(';')
+        print(sqlCommands)
+
+        for command in sqlCommands:
               try:
                   if command.strip() != '':
                       cur.execute(command)
               except (IOError):
                   print("Command skipped: ")
-          cnx.commit()
-
-      elif selection == '3':
-          user_management()
-      elif selection == '4':
-          data_entry()
-      elif selection == '5':
-          museum_view()
-      elif selection == '9':
-          running = False
-      else:
-          print("Invalid selection")
+        cnx.commit()
+        pass
 
 def user_management():
     running = True
-    while(running):  
-        print("User Management Console: ")
-
+    while running:  
+        print("Welcome to the User Management Console: ")
         print("1- Add new User")
         print("2- Access Control")
         print("3- Manage User")
