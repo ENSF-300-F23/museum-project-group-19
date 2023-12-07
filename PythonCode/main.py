@@ -1,3 +1,7 @@
+# main.py
+# 'group-19'
+# Created by Qasim Amar, Said Rehmani, Siddhartha Paudel
+
 import mysql.connector
 from tabulate import tabulate
 def admin_consol():
@@ -6,7 +10,7 @@ def admin_consol():
     while(running):
       print("Admin Console: ")
       print("1- Enter SQL Commands")
-      print("2- Provide path to SQL file")
+      print("2- Give Path to SQL file")
       print("3- User Management")
       print("4- Data Entry")
       print("5- View Museum Data")
@@ -79,7 +83,7 @@ def user_management():
             print("Invalid selection")
 
 def add_user():
-    print("Enter the following information for the new User:")
+    print("Enter The Following Information for the New User:")
     user_name = input("User Name: ")
     user_password = input("User Password: ")
     
@@ -107,7 +111,7 @@ def access_control():
         elif selection == '2':
             grant_access(user_name)
         else:
-            print("Invalid selection")
+            print("Invalid Selection")
 
 def revoke_access(user_name):
     cur.execute("REVOKE ALL PRIVILEGES, GRANT OPTION FROM %(username)s@localhost", {"username": user_name})
@@ -527,37 +531,37 @@ def search_art_piece():
        print("5- Search by Origin")
        print("6- Search by Epoch")
        print("7- Search by Style")
-       print("8- Exit")
+       print("9- Exit")
        selection = input()
 
 
        if selection == '1':
-           art_id_no = int(input("Type the ID Number of the art Piece you are serching for: "))
+           art_id_no = int(input("Type the ID Number of the Art Piece you are serching for: "))
            query = "select Piece_Title, Artist_Name, Creation_Year, ID_no from art_pieces where art_pieces.ID_NO = %(id_no)s"
            cur.execute(query, { 'id_no': art_id_no})
        elif selection == '2':
-           art_title = input("Type the Title of the art Piece you are serching for: ")
+           art_title = input("Type the Title of the Art Piece you are serching for: ")
            query = "select Piece_Title, Artist_Name, Creation_Year from art_pieces where art_pieces.Piece_Title = %(title)s"
            cur.execute(query, { 'title': art_title})
        elif selection == '3':
-           art_artist = input("Type the Artist of the art Piece you are serching for: ")
+           art_artist = input("Type the Artist of the Art Piece you are serching for: ")
            query = "select Piece_Title, Artist_Name, Creation_Year from art_pieces where art_pieces.Artist_Name = %(artist)s"
            cur.execute(query, { 'artist': art_artist})
        elif selection == '4':
-           art_year = int(input("Type the Year of the art Piece you are serching for: "))
+           art_year = int(input("Type the Year of the Art Piece you are serching for: "))
            query = "select Piece_Title, Artist_Name, Creation_Year from art_pieces where art_pieces.Creation_Year = %(Year)s"
            cur.execute(query, { 'Year': art_year})
        elif selection == '5':
-           art_origin = input("Type the Title of the art Piece you are serching for: ")
-           query = "select Piece_Title, Artist_Name, Creation_Year, Piece_Origin from art_pieces where art_pieces.Piece_Title = %(origin)s"
+           art_origin = input("Type the Origin of the Art Piece you are serching for: ")
+           query = "select Piece_Title, Artist_Name, Creation_Year, Piece_Origin from art_pieces where art_pieces.Piece_Origin = %(origin)s"
            cur.execute(query, { 'origin': art_origin})
        elif selection == '6':
-           art_epoch = input("Type the Artist of the art Piece you are serching for: ")
-           query = "select Piece_Title, Artist_Name, Creation_Year, Art_Epoch from art_pieces where art_pieces.Artist_Name = %(epoch)s"
+           art_epoch = input("Type the Epoch of the Art Piece you are serching for: ")
+           query = "select Piece_Title, Artist_Name, Creation_Year, Art_Epoch from art_pieces where art_pieces.Art_Epoch = %(epoch)s"
            cur.execute(query, { 'epoch': art_epoch})
        elif selection == '7':
-           art_style = input("Type the Style of the art Piece you are serching for: ")
-           query = "select Piece_Title, Artist_Name, Creation_Year, Art_Type from art_pieces where art_pieces.Creation_Year = %(Style)s"
+           art_style = input("Type the Style of the Art Piece you are serching for: ")
+           query = "select Piece_Title, Artist_Name, Creation_Year, Art_Type from art_pieces where art_pieces.Piece_Description = %(Style)s"
            cur.execute(query, { 'Style': art_style})
        elif selection == '9':
            break
@@ -591,8 +595,8 @@ if __name__ == "__main__":
     selection = input("type 1, 2, or 3 to select your role: ")
 
     if selection in ['1','2']:
-        username= input("user name: ")
-        passcode= input("password: ")
+        username= input("User Name: ")
+        passcode= input("Password: ")
     else:
         username="guest"
         passcode="Guest123!"
